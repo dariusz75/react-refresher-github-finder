@@ -7,7 +7,6 @@ import { items } from 'fusioncharts';
 
 const UserInfo = () => {
   const data = React.useContext(GithubContext);
-  console.log(data);
   const { public_repos, followers, following, public_gists } = data.githubUser;
   
   const items = [
@@ -45,7 +44,7 @@ const UserInfo = () => {
     <section className='section'>
       <Wrapper className='section-center'>
         {items.map((item) => {
-          return <Item id={item.id} {...item} />
+          return <Item key={item.id} {...item} />
         })}
       </Wrapper>
     </section>
