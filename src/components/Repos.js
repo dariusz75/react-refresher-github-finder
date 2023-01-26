@@ -7,16 +7,16 @@ const Repos = () => {
   const { repos } = data;
 
   let languages = repos.reduce((total, item) => {
-    const {language} = item;
+    const { language, stargazers_count } = item;
 
     if(!language) {
       return total;
     };
 
     if(!total[language]) {
-      total[language] = {label: language, value: 1};
+      total[language] = {label: language, value: 1, stars: stargazers_count};
     } else {
-      total[language] = {...total[language], value: total[language].value + 1};
+      total[language] = {...total[language], value: total[language].value + 1, stars: total[language].stars + stargazers_count};
     }
      
 
@@ -24,8 +24,14 @@ const Repos = () => {
     return total;
   }, {});
 
-  languages = Object.values(languages).sort((a, b) => {
+  const mostUsed = Object.values(languages).sort((a, b) => {
     return b.value - a.value
+  }).slice(0, 5);
+
+  const mostPopular = Object.values(languages).sort((a, b) => {
+    return b.stars - a.stars
+  }).map((item) => {
+    return {...item, value: item.stars};
   }).slice(0, 5);
 
   console.log(languages);
@@ -48,10 +54,10 @@ const Repos = () => {
   return(
     <section className='section'>
       <Wrapper className='section-center'>
-        <Pie3D data={languages} />
-        <div></div>
-        <Doughnut2D data={languages} />
-        <div></div>
+        <Pie3D data={mostUsed} />
+        <Column3D data={chartData} />
+        <Doughnut2D data={mostPopular} />
+        <Bar3D data={mostPopular} />
       </Wrapper>
     </section>
   );
