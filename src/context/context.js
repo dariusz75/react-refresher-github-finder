@@ -27,16 +27,24 @@ const GithubProvider = ({children}) => {
       setGithubUser(response.data);
       const { login, followers_url } = response.data;
 
-      axios(`${rootUrl}/users/${login}/repos?per_page=100`).then(response => {
-        setRepos(response.data);
-      })
+      const users = axios(`${rootUrl}/users/${login}/repos?per_page=100`);
 
-      axios(`${followers_url}?per_page=100`).then(response => {
-        setFollowers(response.data);
-      })
+      const followers = axios(`${followers_url}?per_page=100`);
 
-      // https://api.github.com/users/john-smilga/repos?per_page=100
-      // https://api.github.com/users/john-smilga/followers
+      await Promise.allSettled([users, followers])
+      .then((results) => {
+        const [repos, followers] = results;
+        
+
+        if(repos.status === 'fulfilled') {
+          setRepos(repos.value.data);
+        }
+        if(followers.status === 'fulfilled') {
+          setFollowers(followers.value.data);
+        }
+
+      });
+
     } else {
       toggleError(true, 'there is no user with that username')
     }
