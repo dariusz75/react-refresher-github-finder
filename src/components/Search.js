@@ -13,9 +13,6 @@ const Search = () => {
     }
   };
 
-  useEffect(()=>{
-    console.log('kkk', isLoading)
-  }, [])
   return (
     <section className='section'>
       <Wrapper className='section-center'>

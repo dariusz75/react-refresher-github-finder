@@ -5,11 +5,23 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { GithubProvider } from './context/context';
 import { Auth0Provider } from '@auth0/auth0-react';
+// TODO set env variables
+// dev-0e0oy3qz3zzatvgs.us.auth0.com
+// oUlsxGEYJwaucqX1eIijKiRP5ZL3X5oU
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <Auth0Provider
+    domain="dev-0e0oy3qz3zzatvgs.us.auth0.com"
+    clientId="oUlsxGEYJwaucqX1eIijKiRP5ZL3X5oU"
+    authorizationParams={{
+      redirect_uri: window.location.origin
+    }}
+  >
     <GithubProvider>
       <App />
     </GithubProvider>
+  </Auth0Provider>
 );
 
 // If you want your app to work offline and load faster, you can change
